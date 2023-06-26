@@ -30,7 +30,7 @@ if __name__ == '__main__':
                     dict_summary['logs_Sum']=len(logs_List)
                     for csv_file_path in logs_List:
                         print(csv_file_path)
-                        with open(csv_file_path, 'r') as csv_data:
+                        with open(csv_file_path, 'rb') as csv_data:
                             consulta_copy = f"COPY telecomdata FROM STDIN WITH (FORMAT CSV, HEADER true, DELIMITER ';');"
                             cdndb_cur.copy_expert(consulta_copy, csv_data)
                             dict_summary[csv_file_path]={'Sum_csv_Data' : cdndb_cur.rowcount}
@@ -45,7 +45,7 @@ if __name__ == '__main__':
                         cdndb_cur.execute("UPDATE telecomdata SET device = 'WEB' WHERE device LIKE 'STATIONARY' or device LIKE 'CLOUD_CLIENT';")
                         cdndb_connect.commit()
                         time.sleep(2)
-                        cdndb_cur.execute("SELECT DISTINCT telecomdata.contentid FROM telecomdata LEFT JOIN xmldatatest ON telecomdata.contentid = xmldatatest.contentid where xmldatatest.contentid is NULL;")
+                        cdndb_cur.execute("SELECT DISTINCT telecomdata.contentid FROM telecomdata LEFT JOIN xmldata ON telecomdata.contentid = xmldata.contentid where xmldata.contentid is NULL;")
                         contentid_list=cdndb_cur.fetchall()
                         if contentid_list != []:
                             xml_nofound, dict_xml_extract = extract_xml_data(contentid_list)

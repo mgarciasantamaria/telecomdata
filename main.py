@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #_*_ codig: utf8 _*_
-import psycopg2, time, datetime, json
+import psycopg2, time, datetime, json, os
 from modules.constants import *
 from modules.functions import *
 
@@ -103,6 +103,7 @@ if __name__ == '__main__':
                         time.sleep(2)
                         cdndb_cur.execute('DELETE FROM telecomdata;')
                         cdndb_connect.commit()
+                        os.remove(csv_file_path)
                     dict_summary_str=json.dumps(dict_summary, sort_keys=False, indent=4)
                     print(dict_summary_str)
                     print_log(dict_summary_str, date_log)

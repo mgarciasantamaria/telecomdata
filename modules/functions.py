@@ -18,7 +18,7 @@ def SendMail(text, mail_subject): #se define la función llamada 'SendMail' que 
     msg.set_content(text) #Se establece el contenido del correo electrónico utilizando el valor del argumento 'text'.
     msg['Subject'] = mail_subject #Se establece el asunto del correo electrónico utilizando el valor del argumento 'mail_subject'.
     msg['From'] = 'alarmas-aws@vcmedios.com.co' #Se establece la dirección de correo electrónico del remitente en el encabezado 'From' del correo electrónico.
-    msg['To'] = [Mail_To] # Se establece la dirección de correo electrónico del destinatario en el encabezado 'To' del correo electrónico. El valor de la variable 'Mail_To' se utiliza como dirección de correo electrónico del destinatario.
+    msg['To'] = Mail_To # Se establece la dirección de correo electrónico del destinatario en el encabezado 'To' del correo electrónico. El valor de la variable 'Mail_To' se utiliza como dirección de correo electrónico del destinatario.
     conexion = smtplib.SMTP(host='10.10.130.217', port=25) #Se crea una conexión SMTP utilizando el host '10.10.130.217' y el puerto '25'.
     conexion.ehlo() #Se inicia la conexión SMTP con el servidor.
     conexion.send_message(msg) #Se envía el correo electrónico utilizando el método 'send_message()' del objeto SMTP creado anteriormente.

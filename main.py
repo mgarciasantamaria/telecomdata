@@ -124,4 +124,4 @@ if __name__ == '__main__':
             mail_subject='FAIL etltelecom_PROD Execution Error'
             SendMail(dict_summary_str, mail_subject)
     else:
-        SendMail("etltelecom_PROD application failure not recognized\n", 'FAIL etltelecom_PROD Execution Error')
+        SendMail("etltelecom_PROD application failure not recognized", "FAIL etltelecom_PROD Execution Error")

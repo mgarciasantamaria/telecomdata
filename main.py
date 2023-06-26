@@ -30,7 +30,7 @@ if __name__ == '__main__':
                     dict_summary['logs_Sum']=len(logs_List)
                     for csv_file_path in logs_List:
                         print(csv_file_path)
-                        with open(csv_file_path, 'rb') as csv_data:
+                        with open(csv_file_path, 'r', encoding="utf_8") as csv_data:
                             consulta_copy = f"COPY telecomdata FROM STDIN WITH (FORMAT CSV, HEADER true, DELIMITER ';');"
                             cdndb_cur.copy_expert(consulta_copy, csv_data)
                             dict_summary[csv_file_path]={'Sum_csv_Data' : cdndb_cur.rowcount}

@@ -108,9 +108,9 @@ def extract_xml_data(contentid_list): #Se define la función llamada extract_xml
                 data[9], #rating
                 data[10] #duration
             )
-            #cdndb_cur.execute(SQL,DATA) #Se ejecuta la sentencia SQL con los datos especificados en la tupla DATA
+            cdndb_cur.execute(SQL,DATA) #Se ejecuta la sentencia SQL con los datos especificados en la tupla DATA
             data_insert+=1
-        #cdndb_connect.commit() #Se confirman los cambios en la base de datos
+        cdndb_connect.commit() #Se confirman los cambios en la base de datos
         cdndb_connect.close() #Se cierra la conexion con la base de datos
         return xml_not_found, {'content_Data_Sum': len(contentid_list), 'xml_NoFound_Sum': count_xml_not_found, 'xml_Data_Insert_Sum': data_insert} #Retorna la lista de contentid a los cuales se extrajo los datos del xml.
         #print(xml_data)

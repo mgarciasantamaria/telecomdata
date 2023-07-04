@@ -1,0 +1,6 @@
+11:13:45	{
+    "./S3Download/weeklyreport_20230625-20230701.csv": {
+        "Sum_csv_Data": 83649,
+        "sum_Insert_Playbacks": 83649
+    }
+}

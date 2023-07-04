@@ -108,9 +108,9 @@ def extract_xml_data(contentid_list): #Se define la función llamada extract_xml
                 data[9], #rating
                 data[10] #duration
             )
-            cdndb_cur.execute(SQL,DATA) #Se ejecuta la sentencia SQL con los datos especificados en la tupla DATA
+            #cdndb_cur.execute(SQL,DATA) #Se ejecuta la sentencia SQL con los datos especificados en la tupla DATA
             data_insert+=1
-        cdndb_connect.commit() #Se confirman los cambios en la base de datos
+        #cdndb_connect.commit() #Se confirman los cambios en la base de datos
         cdndb_connect.close() #Se cierra la conexion con la base de datos
         return xml_not_found, {'content_Data_Sum': len(contentid_list), 'xml_NoFound_Sum': count_xml_not_found, 'xml_Data_Insert_Sum': data_insert} #Retorna la lista de contentid a los cuales se extrajo los datos del xml.
         #print(xml_data)
@@ -123,34 +123,13 @@ def extract_xml_data(contentid_list): #Se define la función llamada extract_xml
 
 #************************************************************--END--*******************************************
 
-def Download_Logs(DATE_LOG):
+def Download_Log(LOG_NAME):
     try:
-        objects={'Objects':[]}
-        list_objects=[]
         aws_session=boto3.Session(profile_name=aws_profile)
         s3_client=aws_session.client('s3')
-        logs=s3_client.list_objects_v2(Bucket=Bucket_logs)
-        if 'Contents' in logs:    
-            for i in range(len(logs['Contents'])):
-                log_Key=logs['Contents'][i]['Key']
-                S3Transfer(s3_client, TransferConfig(max_bandwidth=5000000)).download_file(Bucket_logs,log_Key,f'{Downloads_Path}/{log_Key}')
-                objects['Objects'].append({'Key': log_Key,})
-                list_objects.append(f"{Downloads_Path}/{log_Key}")
-                s3_client.copy_object(
-                    Bucket=Bucket_logs_old,
-                    CopySource=f'{Bucket_logs}/{log_Key}',
-                    Key=f'{log_Key}'
-                    )
-                
-            s3_client.delete_objects(
-                    Bucket=Bucket_logs,
-                    Delete=objects
-                )
-            return list_objects
-        else:
-            text_print=f"Logs not found"
-            print_log(text_print,DATE_LOG)
-            return []
+        csv_path=f'{Downloads_Path}/{LOG_NAME}'
+        S3Transfer(s3_client, TransferConfig(max_bandwidth=5000000)).download_file(Bucket_logs,LOG_NAME,csv_path)
+        return csv_path
     except:
         error=sys.exc_info()[2] #Captura del error generado por el sistema.
         errorinfo=traceback.format_tb(error)[0] #Cartura del detalle del error.
@@ -181,20 +160,8 @@ def Duration_Transform(duration):
 #*********************--FUNCTION print_log--************************************************************
 #Funcion que permite escribir texto en un archivo txt. Toma como argumento la variable TEXT que corresponde al texto a imprimir en el archivo
 #y la variable DATE_LOG que corresponde a la fecha de creacion del log. No devuelve.
-def print_log(TEXT, DATE_LOG):
-    log_file=open(f"{log_Path}/{DATE_LOG}_log.txt", "a")
+def print_log(TEXT):
+    log_file=open(f"{log_Path}/Sumary_log.txt", "a")
     log_file.write(f"{str(datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S'))}\t{TEXT}\n")
     log_file.close()
 #************************************--END--************************************************************
-
-def Flag_Status(OPTION):
-    with open(json_path, "r") as json_file:
-            json_data=json.load(json_file)
-    if OPTION=="r":
-        return json_data["FLAG"]
-    elif OPTION=="w":
-        json_data["FLAG"]=False
-        with open(json_path, "w") as json_file:
-            json.dump(json_data, json_file)
-    else:
-        pass

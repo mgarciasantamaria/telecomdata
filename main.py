@@ -44,6 +44,9 @@ if __name__ == '__main__':
             cdndb_cur.execute("UPDATE telecomdata SET device = 'WEB' WHERE device LIKE 'STATIONARY' or device LIKE 'CLOUD_CLIENT';")
             cdndb_connect.commit()
             time.sleep(2)
+            cdndb_cur.execute("UPDATE telecomdata SET country = 'AR' WHERE country LIKE 'error';")
+            cdndb_connect.commit()
+            time.sleep(2)
             cdndb_cur.execute("SELECT DISTINCT telecomdata.contentid FROM telecomdata LEFT JOIN xmldata ON telecomdata.contentid = xmldata.contentid where xmldata.contentid is NULL;")
             contentid_list=cdndb_cur.fetchall()
             if contentid_list != []:
